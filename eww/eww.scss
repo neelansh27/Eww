@@ -1,0 +1,135 @@
+*{
+	all: unset;
+	border-width: 0px;
+	font-family: "JetBrains Mono";
+}
+.bar2{
+	background-color: rgba(0, 0, 0 , 0.0);
+	border-color: rgba(0, 0, 0 , 0.0);
+}
+.workspace_module{
+	font-size: 15;
+	background-color: #111111;
+	color: #E0E6ED;
+	margin: 4px 8px 0px 6px;
+	border-radius: 30px ;
+}
+.widgets-container{
+	background-color: #111111; 
+	border-radius: 30px ;
+}
+image.art{
+    border-radius: 30px;
+}
+
+.launch{
+	font-size: 24;
+	min-width:  45px;
+	// background-color: #FFD900;
+	color: #00B2FF;
+	margin: 0px 0px 0px 2px;
+	border-radius: 20px;
+}
+
+
+.time_text{
+	color: #f1f1f1;
+	font-weight: 600;
+    margin: 7px 10px 0px 0px ;
+}
+.vol-icon{
+    background-color: #111111;
+	color: #38D9EE;
+	margin: 0px 8px 0px 8px;
+    font-size: 18;
+}
+.bright-icon{
+    font-size: 17;
+    margin: 0px 6px 0px 10px ;
+	color: #FFD900; 
+	border-radius: 30px;
+}
+.bat-icon{
+	color: #EAE7DA; 
+    background-color: #111111;
+    margin: 10px 13px 10px 9px ;
+    font-size: 12;
+}
+.bat_ring{
+	color: #FF7C00;
+	background-color: #7B7B7A;
+	border-radius: 10px;
+    margin: 2px 0px 2px 0px ;
+}
+.mem-icon{
+	color: #EAE7DA;
+    background-color: #111111;
+    font-size: 18;
+    margin: 9px 11px 8px 8px ;
+}
+.mem_ring{
+	color: #00FF43;
+	background-color: #7B7B7A;
+	border-radius: 40px;
+    margin: 2px 0px 2px 0px ;
+}
+
+.wifi-icon{
+    font-size: 18;
+    background-color: #111111;
+	margin: 0px 10px 0px 0px;
+}
+.wifi_name{
+	margin: 0px 2px 0px 3px;
+	color: #FF6052;
+	font-weight: 600;
+}
+.music{
+    font-weight: 700;
+    background: #111111;
+    border-radius: 30px;
+}
+.art {
+	background-size: cover;
+	background-position: center;
+    margin: 3px  0px 3px 4px;
+	min-width: 30px;
+	border-radius: 20px;
+}
+.music_box{
+    border-radius: 30px;
+    font-weight: 700;
+}
+.music_text{
+    color: #f1f1f1;
+	min-width: 150px;
+    margin: 0px 5px 0px 6px;
+
+}
+scale trough {
+  background-color: #606061;
+  box-shadow: 0 2px 3px 2px #06060b;
+  border-radius: 30px;
+  min-height: 10px;
+  margin: 0px 0px 0px 8px;
+}
+
+.bright_slide trough highlight {
+  background-image: linear-gradient(to right, #FFE500 30%, #FFC600 50%, #FF9900 100% *50);
+  border-radius: 10px;
+}
+
+.vol_slide trough highlight {
+  background-image: linear-gradient(to right,#32CEE8 30%, #0AAFFF 50%, #0672E2 100% *50);
+  border-radius: 10px;
+}
+
+tooltip.background{
+	color: #f1f1f1;
+    background-color: #111111;
+    font-size: 14;
+    border-radius: 40px;
+}
+tooltip label{
+		margin: 6px; 
+}

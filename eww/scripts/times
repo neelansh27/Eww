@@ -1,0 +1,5 @@
+#!/bin/bash
+while true; do
+    echo "(box :orientation \"h\" :valign \"center\" :space-evenly \"false\" (label :class \"time_text\" :yalign 0.8 :text \"$(date +"%I:%M:%p \| %B %d, %A")\"))"
+    sleep 10
+done

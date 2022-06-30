@@ -1,0 +1,34 @@
+#!/bin/bash
+workspaces() {
+uo=""
+f=""
+o=""
+i1=""
+i2=""
+i3=""
+i4=""
+i5=""
+i6=""
+i7=""
+i8=""
+declare -a wk=( $i1 $i2 $i3 $i4 $i5 $i6 $i7 $i8 )
+occupied=($(bspc query -D -d .occupied --names))
+focused=($(bspc query -D -d .focused --names))
+w=1
+nw=$((${#wk[@]}+1))
+while [ $w -lt $nw ] ; do
+    if [[  " ${focused[*]} " =~ " ${w} " ]]; then
+        wk[$(($w-1))]=$f
+    elif [[  " ${occupied[*]} " =~ " ${w} " ]]; then
+        wk[$(($w-1))]=$o
+    else
+        wk[$(($w-1))]=$uo
+    fi
+    w=$(( $w+1 ))
+done
+echo "(box :class \"workspace_module\" :spacing 10 :orientation \"h\" :space-evenly \"false\" (button :class \"workspace_module\" :onclick \"bspc desktop -f 1\" \"${wk[0]}\") (button :class \"workspace_module\" :onclick \"bspc desktop -f 2\" \"${wk[1]}\") (button :class \"workspace_module\" :onclick \"bspc desktop -f 3\" \"${wk[2]}\") (button :class \"workspace_module\" :onclick \"bspc desktop -f 4\" \"${wk[3]}\") (button :class \"workspace_module\" :onclick \"bspc desktop -f 5\" \"${wk[4]}\") (button :class \"workspace_module\" :onclick \"bspc desktop -f 6\" \"${wk[5]}\") (button :class \"workspace_module\" :onclick \"bspc desktop -f 7\" \"${wk[6]}\") (button :class \"workspace_module\" :onclick \"bspc desktop -f 8\" \"${wk[7]}\"))"
+}
+workspaces
+bspc subscribe desktop | while read -r _ ; do
+workspaces
+done

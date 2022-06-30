@@ -1,0 +1,175 @@
+(defvar eww "$HOME/eww/target/release/./eww")
+(defvar vol_reveal false)
+(defpoll ram :interval "15s" "./scripts/ram")
+(defpoll vol :interval "1s" "~/.config/eww/scripts/getvol.sh -V")
+(defpoll vol_icon :interval "1s" "~/.config/eww/scripts/getvol.sh -i")
+(defpoll bat :interval "90s" "./scripts/battery -p")
+(defpoll bs :interval "5s" "./scripts/battery -s")
+(defpoll brightness :interval "3s" "./scripts/brightness")
+(defvar bright_reveal false)
+(defpoll COL_WLAN :interval "3s" "~/.config/eww/scripts/wifi --COL")
+(defpoll ESSID_WLAN :interval "10s" "~/.config/eww/scripts/wifi --ESSID")
+(defpoll WLAN_ICON :interval "3s" "~/.config/eww/scripts/wifi --ICON")
+(defvar wifi_reveal false)
+(deflisten metadata "~/.config/eww/scripts/music.sh --title")
+(defpoll cover_art :interval "1s" "~/.config/eww/scripts/music.sh --cover")
+
+
+;; workspaces
+(deflisten workspaces "scripts/workspaces")
+(defwidget workspace []
+           (literal :content workspaces))
+(defwindow bar1
+           :monitor 0
+           :geometry (geometry :x "3px"
+                               :y "3px"
+                               :width "16%"
+                               :anchor "top left")
+            :stacking "fg"
+            :windowtype "dock"
+            :wm-ignore false
+            (workspace))
+
+
+;; volume widget
+(defwidget vol []
+ (eventbox :onhover "${eww} update vol_reveal=true" :onhoverlost "${eww} update vol_reveal=false"
+        (box :class "title"
+                :orientation "horizontal"
+                :space-evenly "false"
+                (revealer :transition "slideright" :reveal vol_reveal :duration "350ms"
+                (scale
+                :flipped "true"
+                :value vol
+				:class "vol_slide"
+                :tooltip vol
+                :orientation "h"
+                :width 90
+                :min 0
+                :max 101
+                :onchange "amixer set Master {}%"))
+                (button :onclick "amixer set Master toggle" :class "vol-icon" vol_icon)
+               )))
+
+;; brightness widget
+(defwidget bright []
+ (eventbox :class "bright_box"  :onhover "${eww} update bright_reveal=true" :onhoverlost "${eww} update bright_reveal=false"
+           (box  :space-evenly "false"
+                (revealer :transition "slideright" :reveal bright_reveal :duration "350ms"
+                (scale
+				:class "bright_slide"
+				:flipped "true"
+				:value brightness
+                :tooltip brightness
+                :orientation "h"
+                :width 80
+                :min 0
+                :max 101
+                :onchange "xbacklight -set {}"))
+				(label :class "bright-icon" :text "")
+				)))
+
+;;Ram usage
+(defwidget memory_usage []
+           (box  :vexpand "false" :hexpand "false"
+            (circular-progress
+				:class "mem_ring"
+                :value ram
+                :thickness 3.7 
+                :start-at 74.5
+                :clockwise true
+                (button :class "mem-icon" :show_truncated false :tooltip "RAM Usage :${ram}%" ""))))
+
+;;battery widget
+(defwidget battery []
+		(box :class "bat_module" :vexpand "false" :hexpand "false"
+            (circular-progress :class "bat_ring":value bat
+                :thickness 3.5
+                :start-at 74.5
+            (button
+                :class "bat-icon"
+                :limit-width 2
+                :tooltip "Battery :${bat}%"
+                :show_truncated false
+                :wrap false
+                bs))))
+
+;;wifi
+(defwidget wifi []
+  (eventbox :onhover "${eww} update wifi_reveal=true"
+			  :onhoverlost "${eww} update wifi_reveal=false"
+		(box :vexpand "false" :hexpand "false" :space-evenly "false"
+	(revealer :transition "slideright"
+			  :reveal wifi_reveal
+			  :duration "350ms"
+	(label    :class "wifi_name"
+			  :text ESSID_WLAN
+			  :orientation "h"
+			  ))
+	(button :class "wifi-icon" :onclick "networkmanager_dmenu &" :wrap "false" :limit-width 12 :style "color: ${COL_WLAN};" WLAN_ICON)
+)))
+
+;;time
+(deflisten times "scripts/times")
+(defwidget time []
+           (literal :content times))
+;;launcher
+(defwidget launcher []
+    (eventbox :halign "center" :onclick "sh ~/.config/bspwm/rofi/bin/launcher &"  (label :class "launch" :text "")))
+
+(defwidget music_widget []
+           (box :orientation "h" :hexpand "true" :class "music_box" :halign "start" :space-evenly "false"
+            (box  :class "art" :style "background-image :url('${cover_art}');")
+            (box :halign "end" :class "music_text" "${metadata}" )))
+(defwidget music_container []
+	(eventbox :orientation "h" :onclick "playerctl play-pause"
+		(music_widget)))
+;; left widgets
+(defwidget left []
+	(box
+	:space-evenly true
+			(box
+			:class "widgets-container"
+			:height "1%"
+			:halign "start"
+			:space-evenly "false"
+            (launcher)
+			(workspace))
+            (box
+				:class "widgets-container"
+                :vexpand "false"
+                :hexpand "false"
+                :halign "end"
+                :orientation "h"
+				:spacing 10
+                :space-evenly false
+                (bright)
+                (vol)
+                (wifi)
+                (battery)
+                (memory_usage)
+                (time)
+                )))
+
+(defwindow bar2
+           :monitor 0
+		   :class "bar_2"
+           :geometry  (geometry :x "-8px"
+                               :y "2px"
+                               :width "99%"
+                               :height "32px"
+                               :anchor "top right")
+            ;;:reserve (struts :distance "32px" :side "top")
+			:stacking "fg"
+            :windowtype "dock"
+            (left))
+(defwindow music
+           :monitor 0
+           :geometry  (geometry :x "-18px"
+                               :y "2px"
+                               :width "15%"
+                               :height "34px"
+                               :anchor "top center")
+			:stacking "bg"
+            :windowtype "dock"
+            (music_container))
